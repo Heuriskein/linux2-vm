@@ -13,30 +13,26 @@ rmills_data = {
    ],
 }
 
-describe 'linux-vm::default' do
+describe 'linux-vm::desktop' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04') do |node, server|
       server.create_data_bag('users', {'rmills' => rmills_data})
     end.converge(described_recipe)
   end
 
-  before do
-    stub_command('which sudo').and_return('/bin/sudo')
-    stub_command("grep -q 'GRUB_TIMEOUT=0' /etc/default/grub").and_return(0)
-    stub_command("grep CHEF_NO_OVERWRITE /etc/default/locale").and_return(0)
-  end
-
-  it 'requires proper recipes to build a single box stack' do
-    expect(chef_run).to include_recipe('linux-vm::locale')
-    expect(chef_run).to include_recipe('linux-vm::desktop')
-    expect(chef_run).to include_recipe('idea::default')
-  end
-
-  it 'installs necessary packages' do
+  it 'installs packages' do
     expect(chef_run).to install_package('openjdk-7-jre')
     expect(chef_run).to install_package('openjdk-7-jdk')
     expect(chef_run).to install_package('firefox')
-    expect(chef_run).to install_package('gnome-shell')
     expect(chef_run).to install_package('xsel')
   end
+
+  it 'installs idea' do
+    expect(chef_run).to include_recipe('idea::default')
+  end
+
+  it 'creates idea directory' do
+    expect(chef_run).to create_directory('/opt/idea')
+  end
+
 end

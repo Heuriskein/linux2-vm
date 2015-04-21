@@ -13,7 +13,7 @@ rmills_data = {
    ],
 }
 
-describe 'linux-vm::default' do
+describe 'linux-vm::users' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04') do |node, server|
       server.create_data_bag('users', {'rmills' => rmills_data})
@@ -26,17 +26,13 @@ describe 'linux-vm::default' do
     stub_command("grep CHEF_NO_OVERWRITE /etc/default/locale").and_return(0)
   end
 
-  it 'requires proper recipes to build a single box stack' do
-    expect(chef_run).to include_recipe('linux-vm::locale')
-    expect(chef_run).to include_recipe('linux-vm::desktop')
-    expect(chef_run).to include_recipe('idea::default')
+  it 'grants rmills sudo' do
+    expect(chef_run).to install_sudo({'user'=>'rmills', 'nopasswd'=>true})
+    expect(chef_run).to install_sudo('vagrant')
   end
 
-  it 'installs necessary packages' do
-    expect(chef_run).to install_package('openjdk-7-jre')
-    expect(chef_run).to install_package('openjdk-7-jdk')
-    expect(chef_run).to install_package('firefox')
-    expect(chef_run).to install_package('gnome-shell')
-    expect(chef_run).to install_package('xsel')
+  it 'removes rmills password' do
+    expect(chef_run).to run_execute('sudo passwd -d rmills')
+    expect(chef_run).to run_execute('sudo passwd -d vagrant')
   end
 end

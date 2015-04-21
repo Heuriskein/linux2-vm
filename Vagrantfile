@@ -24,6 +24,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder "D:/Users/Ryan.Ryan-PC.000/proj", "/var/proj"
 
+  # Use the insecure vagrant key since this is for a private network.
+  config.ssh.insert_key = false
+
+  # Enable x11 forwarding
+  config.ssh.forward_x11 = true
+
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -43,5 +49,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provision "chef_zero" do |chef|
     chef.data_bags_path = "data_bags"
+    chef.run_list = [ "recipe[linux-vm::default]" ]
   end
 end

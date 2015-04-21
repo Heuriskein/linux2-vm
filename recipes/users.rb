@@ -12,20 +12,10 @@ include_recipe 'users::sysadmins'
 # (i.e. passwords). See attributes/ssh.rb for details.
 include_recipe 'sudo'
 
-# Some VM box images will already have the vagrant user
-# configured in /etc/sudoers.d, but some won't; make it so
-sudo "vagrant" do
-  user      "vagrant"
-  nopasswd  true
-end
-execute "Remove password for vagrant" do
-  command "sudo passwd -d vagrant"
-end
-
 # Find any users listed in data_bags/users/*.json that
 # are members of sysadmin group and not being removed
 # then configure those users
-search(:users, "groups:sysadmin NOT action:remove") do |u|
+search('users', "groups:sysadmin NOT action:remove") do |u|
 
   # Enable password-less sudo access for this user
   sudo u['id'] do

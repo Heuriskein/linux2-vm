@@ -19,11 +19,6 @@ include_recipe "desktop"
     end
   end
 
-# Enable X11 forwarding
-  execute "enable x11forwarding in sshd_config" do
-    command "echo 'EnableX11Forwarding yes' >> /etc/ssh/sshd_config"
-  end
-
 # Browser
   package "firefox"
 

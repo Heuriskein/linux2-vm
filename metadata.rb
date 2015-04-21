@@ -13,7 +13,7 @@ end
 # Cookbooks from Opscode
   # Use 1.1.2, which is the last version of this cookbook that doesn't
   # have copy-protection checks related to chef-solo
-  depends 'users', '= 1.1.2'
+  depends 'users' #, '= 1.1.2'
 
   depends 'build-essential'
   depends 'curl'
