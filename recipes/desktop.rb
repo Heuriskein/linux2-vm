@@ -3,6 +3,7 @@
 # Recipe:: desktop
 #
 
+
 case node['platform_family']
 when "debian"
   include_recipe "linux-vm::desktop_debian"
@@ -13,6 +14,8 @@ directory "/opt/idea" do
   action :create
 end
 
+package "git"      # required for this recipe to work
+package "wget"
 package "openjdk-7-jre"
 package "openjdk-7-jdk"
 
