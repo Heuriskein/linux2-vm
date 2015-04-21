@@ -25,6 +25,8 @@ describe 'linux-vm::desktop' do
     expect(chef_run).to install_package('openjdk-7-jdk')
     expect(chef_run).to install_package('firefox')
     expect(chef_run).to install_package('xsel')
+    expect(chef_run).to install_package('git')
+    expect(chef_run).to install_package('wget')
   end
 
   it 'installs idea' do

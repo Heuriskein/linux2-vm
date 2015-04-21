@@ -27,7 +27,7 @@ describe 'linux-vm::users' do
   end
 
   it 'grants rmills sudo' do
-    expect(chef_run).to install_sudo({'user'=>'rmills', 'nopasswd'=>true})
+    expect(chef_run).to install_sudo('rmills')
     expect(chef_run).to install_sudo('vagrant')
   end
 
